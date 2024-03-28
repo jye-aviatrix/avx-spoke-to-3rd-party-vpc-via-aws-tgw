@@ -35,6 +35,9 @@ If you do SNI or URL filtering or IDS, DCF if stateful. If you are just filterin
 
 This is important to consider, as the traffic to SAP would leave from primary GW eth0, but return via HA GW eth0. If using SNI/URL filtering/IDS, then we must SNAT the traffic to GW eth0 to ping it to a specific gateway.
 
+# WARNING
+!!! Only run this in your test environment. Existing DCF policy will be OVERWRITTEN!!!
+
 ## Testing
 - confirm iperf3 is install on test nodes
 - On sap-pub1 and sap-pub2, launch iperf3 as server by using: ```iperf3 -s```
