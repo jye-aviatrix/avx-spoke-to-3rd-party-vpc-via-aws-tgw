@@ -22,7 +22,7 @@
 ## Distributed Cloud Firewall (DCF)
 - Create smart groups for app-pub1 and app-pub2 VMs using name tag
 - Create smart group for sap using CIDR 10.64.0.0/24
-- Create Distributed Firewall Policies
+- Create Distributed Firewall Policies in following order
     - Allow app-pub1 talk to sap
     - Allow app-pub2 talk to sap
     - Deny inbound traffic from sap
