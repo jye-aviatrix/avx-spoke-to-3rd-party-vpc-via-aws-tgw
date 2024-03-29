@@ -144,21 +144,21 @@ resource "aws_ec2_transit_gateway_vpc_attachment" "sap_to_tgw" {
   vpc_id             = aviatrix_vpc.sap_vpc.vpc_id
 }
 
-# Add routes on SAP VPC subnet routes
-resource "aws_route" "sap" {
-  for_each               = toset(aviatrix_vpc.sap_vpc.route_tables)
-  route_table_id         = each.value
-  destination_cidr_block = "10.0.0.0/8"
-  transit_gateway_id     = aws_ec2_transit_gateway.tgw.id
-}
+# # Add routes on SAP VPC subnet routes
+# resource "aws_route" "sap" {
+#   for_each               = toset(aviatrix_vpc.sap_vpc.route_tables)
+#   route_table_id         = each.value
+#   destination_cidr_block = "10.0.0.0/8"
+#   transit_gateway_id     = aws_ec2_transit_gateway.tgw.id
+# }
 
-# Add routes to Connect VPC subnet routes
-resource "aws_route" "conn" {
-  for_each               = toset(module.mc-spoke-conn.vpc.route_tables)
-  route_table_id         = each.value
-  destination_cidr_block = var.sap_vpc_cidr
-  transit_gateway_id     = aws_ec2_transit_gateway.tgw.id
-}
+# # Add routes to Connect VPC subnet routes
+# resource "aws_route" "conn" {
+#   for_each               = toset(module.mc-spoke-conn.vpc.route_tables)
+#   route_table_id         = each.value
+#   destination_cidr_block = var.sap_vpc_cidr
+#   transit_gateway_id     = aws_ec2_transit_gateway.tgw.id
+# }
 
 # Add route to onprem to TGW route table
 resource "aws_ec2_transit_gateway_route" "to_onprem" {

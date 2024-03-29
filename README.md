@@ -38,6 +38,14 @@ This is important to consider, as the traffic to SAP would leave from primary GW
 # WARNING
 !!! Only run this in your test environment. Existing DCF policy will be OVERWRITTEN!!!
 
+## Deployment
+- Run terraform apply once
+- Uncomment line 147 to line 161 and run terraform apply the 2nd time.
+
+## Decomission
+- Comment line 147 to line 161 and run terraform apply
+- Then run terraform destroy
+
 ## Testing
 - confirm iperf3 is install on test nodes
 - On sap-pub1 and sap-pub2, launch iperf3 as server by using: ```iperf3 -s```
