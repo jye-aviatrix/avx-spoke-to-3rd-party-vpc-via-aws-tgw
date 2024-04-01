@@ -135,6 +135,7 @@ resource "aws_ec2_transit_gateway_vpc_attachment" "conn_to_tgw" {
   subnet_ids         = [[for s in module.mc-spoke-conn.vpc.private_subnets : s if !strcontains(s.name, "Private-1")][0].subnet_id, [for s in module.mc-spoke-conn.vpc.private_subnets : s if !strcontains(s.name, "Private-2")][0].subnet_id]
   transit_gateway_id = aws_ec2_transit_gateway.tgw.id
   vpc_id             = module.mc-spoke-conn.vpc.vpc_id
+  transit_gateway_default_route_table_propagation = false  # SAP VPC and CON VPC should not have direct communication
 }
 
 # Attach SAP VPC to AWS TGW
@@ -142,6 +143,7 @@ resource "aws_ec2_transit_gateway_vpc_attachment" "sap_to_tgw" {
   subnet_ids         = [[for s in aviatrix_vpc.sap_vpc.private_subnets : s if !strcontains(s.name, "Private-1")][0].subnet_id, [for s in aviatrix_vpc.sap_vpc.private_subnets : s if !strcontains(s.name, "Private-2")][0].subnet_id]
   transit_gateway_id = aws_ec2_transit_gateway.tgw.id
   vpc_id             = aviatrix_vpc.sap_vpc.vpc_id
+  transit_gateway_default_route_table_propagation = true
 }
 
 # # Add routes on SAP VPC subnet routes
@@ -165,6 +167,13 @@ resource "aws_ec2_transit_gateway_route" "to_onprem" {
   destination_cidr_block         = "0.0.0.0/0"
   transit_gateway_attachment_id  = aws_ec2_transit_gateway_vpc_attachment.conn_to_tgw.id
   transit_gateway_route_table_id = aws_ec2_transit_gateway.tgw.association_default_route_table_id
+}
+
+# Add route to blackhole direct traffic from SAP VPC to Conn VPC
+resource "aws_ec2_transit_gateway_route" "blackhole_to_conn" {
+  destination_cidr_block         = var.conn_vpc_cidr
+  transit_gateway_route_table_id = aws_ec2_transit_gateway.tgw.association_default_route_table_id
+  blackhole = true
 }
 
 
