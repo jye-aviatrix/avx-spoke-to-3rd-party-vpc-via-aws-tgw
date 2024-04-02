@@ -41,10 +41,10 @@ This is important to consider, as the traffic to SAP would leave from primary GW
 
 ## Deployment
 - Run terraform apply once
-- Uncomment line 147 to line 161 and run terraform apply the 2nd time.
+- Edit main.tf, uncomment line 149 to line 163 and run terraform apply the 2nd time.
 
 ## Decomission
-- Comment line 147 to line 161 and run terraform apply
+- Edit main.tf, comment line 149 to line 163 and run terraform apply
 - Then run terraform destroy
 
 ## Testing
